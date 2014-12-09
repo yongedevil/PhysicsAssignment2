@@ -6,8 +6,9 @@
 #include "PlatformComponent.h"
 #include "GraphicsComponent.h"
 #include "PlatformComponent.h"
+#include "Behaviour.h"
 
-class PlatformBehaviour : public Component
+class PlatformBehaviour : public Behaviour
 {
 private:
 	static const float X_VELOCITY;

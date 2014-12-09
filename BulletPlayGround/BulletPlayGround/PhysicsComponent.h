@@ -5,6 +5,7 @@
 #include "../BulletCollision/CollisionDispatch/btCollisionWorld.h"
 
 class btRigidBody;
+class Behaviour;
 
 class PhysicsComponent : public Component
 {
@@ -12,7 +13,7 @@ public:
 
 	enum RigidBodyShapeTypes { RBST_Plane = 0, RBST_Sphere };
 
-	PhysicsComponent() : m_shapeType(RBST_Plane) {}
+	PhysicsComponent() : m_shapeType(RBST_Plane), m_behaviour(0) {}
 	virtual ~PhysicsComponent() {}
 
 	void Init(RigidBodyShapeTypes type);
@@ -36,7 +37,16 @@ public:
 	void SetPosition(EVector3f const& pos);
 	EVector3f GetPosition() const;
 
+	void SetVelocity(EVector3f const& vel);
+	EVector3f GetVelocity() const;
+
 	void ApplyImpulse(EVector3f const& impulse);
+
+	void SetActivationState(int state);
+	int GetActivationState() const;
+
+	void SetBehaviour(Behaviour * behaviour);
+	Behaviour * GetBehaviour() const;
 
 private:
 	void CreatePlane();
@@ -46,6 +56,7 @@ protected:
 	//physics variables
 	btRigidBody* m_rigidBody;
 	RigidBodyShapeTypes m_shapeType;
+	Behaviour * m_behaviour;
 };
 
 #endif

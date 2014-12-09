@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 
 	physicsManager = new PhysicsManager();
 	physicsManager->Init();
-	physicsManager->SetDebug(true);
+	//physicsManager->SetDebug(true);
 
 	platform = AddPlatform();
 	sphere = AddSphere();
@@ -152,6 +152,10 @@ void HandleEvents(SDL_Event* curEvent)
 		case SDLK_s:
 		case SDLK_DOWN:
 			sphere->ApplyImpulse(EVector3f(0.0f, -1.0f, 0.0f));
+			break;
+
+		case SDLK_p:
+			sphere->Reset();
 			break;
 
 		case SDLK_SPACE:

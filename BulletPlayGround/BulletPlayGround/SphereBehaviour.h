@@ -5,8 +5,9 @@
 #include "Component.h"
 #include "GraphicsComponent.h"
 #include "PhysicsComponent.h"
+#include "Behaviour.h"
 
-class SphereBehaviour : public Component
+class SphereBehaviour : public Behaviour
 {
 private:
 	bool m_preDrop;
@@ -31,8 +32,9 @@ public:
 	void ApplyImpulse(EVector3f const& impulse);
 	void Move(EVector3f const& move);
 
-private:
-	static EVector3f ConvertColour(Colour colour);
+	void OnCollision(Behaviour * other);
+
+	void Reset();
 };
 
 #endif

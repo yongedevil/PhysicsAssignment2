@@ -3,6 +3,7 @@
 #include "btBulletDynamicsCommon.h"
 #include <iostream>
 #include "Entity.h"
+#include "Behaviour.h"
 
 #include <cmath>
 
@@ -124,14 +125,11 @@ void PhysicsComponent::OnContactProcCallback(btManifoldPoint& cp, PhysicsCompone
 	{
 		btRigidBody* rigidBody = collider->GetRigidBody();
 		float mass = rigidBody->getInvMass();
-		//check to see if we collided with a static object
-		//if(mass < 1.0f)
+
+		if(m_behaviour && collider->GetBehaviour())
 		{
-			m_rigidBody->applyCentralImpulse(btVector3(0,10,0));
-			//m_rigidBody->setGravity(btVector3(0,0,0));
-			//m_rigidBody->setLinearVelocity(btVector3(0,1.1,0));
+			m_behaviour->OnCollision(collider->GetBehaviour());
 		}
-		
 	}
 }
 
@@ -194,7 +192,37 @@ EVector3f PhysicsComponent::GetPosition() const
 	return EVector3f(btPosition.x(), btPosition.y(), btPosition.z());
 }
 
+void PhysicsComponent::SetVelocity(EVector3f const& vel)
+{
+	m_rigidBody->setLinearVelocity(btVector3(vel.x, vel.y, vel.z));
+}
+EVector3f PhysicsComponent::GetVelocity() const
+{
+	btVector3 btVelocity = m_rigidBody->getLinearVelocity();
+	return EVector3f(btVelocity.getX(), btVelocity.getY(), btVelocity.getZ());
+}
+
 void PhysicsComponent::ApplyImpulse(EVector3f const& impulse)
 {
 	m_rigidBody->applyCentralImpulse(btVector3(impulse.x, impulse.y, impulse.z));
+}
+
+void PhysicsComponent::SetActivationState(int state)
+{
+	m_rigidBody->setActivationState(state);
+}
+
+int PhysicsComponent::GetActivationState() const
+{
+	return m_rigidBody->getActivationState();
+}
+
+void PhysicsComponent::SetBehaviour(Behaviour * behaviour)
+{
+	m_behaviour = behaviour;
+}
+
+Behaviour * PhysicsComponent::GetBehaviour() const
+{
+	return m_behaviour;
 }

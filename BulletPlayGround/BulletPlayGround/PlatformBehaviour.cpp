@@ -45,43 +45,11 @@ void PlatformBehaviour::Update(float dt)
 
 void PlatformBehaviour::ChangeColour()
 {
-	EVector3f colour = EVector3f(0.0f, 0.0f, 0.0f);
-
 	m_curColour = (Colour)((short)m_curColour + 1);
 	if (m_curColour >= Colour::NUM_COLOURS)
 		m_curColour = Colour::RED;
 
-	switch (m_curColour)
-	{
-	case Colour::RED:
-		colour.x = 1.0f;
-		break;
-
-	case Colour::YELLOW:
-		colour.x = 0.5f;
-		colour.y = 0.5f;
-		break;
-
-	case Colour::GREEN:
-		colour.y = 1.0f;
-		break;
-
-	case Colour::TEAL:
-		colour.y = 0.5f;
-		colour.z = 0.5f;
-		break;
-
-	case Colour::BLUE:
-		colour.z = 1.0f;
-		break;
-
-	case Colour::MAGENTA:
-		colour.x = 0.5f;
-		colour.z = 0.5f;
-		break;
-	}
-
-	m_graphicsComp->SetColour(colour);
+	m_graphicsComp->SetColour(Behaviour::ConvertColour(m_curColour));
 }
 
 
