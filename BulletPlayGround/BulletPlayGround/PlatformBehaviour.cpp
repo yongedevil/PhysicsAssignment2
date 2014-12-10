@@ -16,6 +16,7 @@ void PlatformBehaviour::Init(GraphicsComponent * graphicsComponent, PlatformComp
 
 	EVector3f velocity = EVector3f(5.0f, 0.0f, 0.0f);
 	m_platformComp->SetVelocity(velocity);
+	m_platformComp->SetBehaviour(this);
 
 	m_curColour = Colour::RED;
 	ChangeColour();

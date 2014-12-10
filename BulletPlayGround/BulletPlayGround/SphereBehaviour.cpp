@@ -11,6 +11,7 @@ void SphereBehaviour::Init(GraphicsComponent * graphicsComponent, PhysicsCompone
 
 	m_graphicsComp->SetColour(m_colourVector);
 	m_physicsComp->SetActivationState(0);
+	m_physicsComp->SetBehaviour(this);
 }
 
 

@@ -16,9 +16,3 @@ void PlatformComponent::SetVelocity(EVector3f velocity)
 	m_rigidBody->activate(true);
 	m_rigidBody->setLinearVelocity(btVector3(m_Velocity.x,m_Velocity.y,m_Velocity.z));
 }
-
-void PlatformComponent::OnContactProcCallback(btManifoldPoint& cp, PhysicsComponent* collider)
-{
-	static float vel = 2.0f;
-	SetVelocity(EVector3f(vel,0.0f,0.0f));
-}

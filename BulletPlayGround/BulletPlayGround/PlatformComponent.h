@@ -11,8 +11,6 @@ public:
 
 	virtual void Update(float deltaTime);
 
-	virtual void OnContactProcCallback(btManifoldPoint& cp, PhysicsComponent* collider);
-
 	EVector3f GetVelocity() const {return m_Velocity;}
 	void SetVelocity(EVector3f velocity); 
 
