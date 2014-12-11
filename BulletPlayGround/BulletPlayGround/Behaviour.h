@@ -19,7 +19,6 @@ public:
 
 	virtual void OnCollision(Behaviour * other);
 
-protected:
 	static EVector3f ConvertColour(Colour colour);
 };
 

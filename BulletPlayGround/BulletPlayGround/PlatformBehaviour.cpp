@@ -1,7 +1,7 @@
 #include "PlatformBehaviour.h"
 #include "Entity.h"
 
-const float PlatformBehaviour::X_VELOCITY = 5.0f;
+const float PlatformBehaviour::X_VELOCITY = 4.0f;
 
 void PlatformBehaviour::Init(GraphicsComponent * graphicsComponent, PlatformComponent * platformComponent, float changeInterval, float minX, float maxX)
 {
@@ -18,7 +18,7 @@ void PlatformBehaviour::Init(GraphicsComponent * graphicsComponent, PlatformComp
 	m_platformComp->SetVelocity(velocity);
 	m_platformComp->SetBehaviour(this);
 
-	m_curColour = Colour::RED;
+	SetColour(Colour::RED);
 	ChangeColour();
 }
 
@@ -46,11 +46,12 @@ void PlatformBehaviour::Update(float dt)
 
 void PlatformBehaviour::ChangeColour()
 {
-	m_curColour = (Colour)((short)m_curColour + 1);
-	if (m_curColour >= Colour::NUM_COLOURS)
-		m_curColour = Colour::RED;
+	Colour curColour = (Colour)((short)GetColour() + 1);
+	if (curColour >= Colour::NUM_COLOURS)
+		curColour = Colour::RED;
 
-	m_graphicsComp->SetColour(Behaviour::ConvertColour(m_curColour));
+	SetColour(curColour);
+	m_graphicsComp->SetColour(Behaviour::ConvertColour(curColour));
 }
 
 

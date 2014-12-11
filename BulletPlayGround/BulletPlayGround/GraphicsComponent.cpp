@@ -73,6 +73,7 @@ void GraphicsComponent::DrawSphere()
 
 void GraphicsComponent::DrawPlane()
 {
+
 	glBegin(GL_QUADS);        // Draw The Cube Using quads
     
     glVertex3f( 1.0f, 1.0f,-1.0f);    // Top Right Of The Quad (Top)
@@ -114,9 +115,11 @@ void GraphicsComponent::Update(float deltaTime)
 
 void GraphicsComponent::Render()
 {
+	glPushMatrix();
 	glColor3f(m_Colour.x, m_Colour.y, m_Colour.z);
     EVector3f pos = m_Owner->GetPosition();
     glTranslatef(pos.x,pos.y,pos.z);
+	glRotatef(m_rotation, 0, 0, 1);
 	switch(m_ShapeType)
 	{
 	case GST_Sphere:
@@ -128,5 +131,5 @@ void GraphicsComponent::Render()
 	default:
 		break;
 	}
-
+	glPopMatrix();
 }

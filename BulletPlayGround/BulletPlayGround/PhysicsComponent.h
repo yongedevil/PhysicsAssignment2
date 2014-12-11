@@ -31,6 +31,9 @@ public:
 	void SetShapeType(RigidBodyShapeTypes type) { m_shapeType = type;}
 	RigidBodyShapeTypes GetShapeType() const { return m_shapeType; }
 
+	void SetInverseMass(float inverseMass);
+	float GetInverseMass() const;
+
 	void SetGravity(EVector3f const& gravity);
 	EVector3f GetGravity() const;
 
@@ -47,6 +50,9 @@ public:
 
 	void SetBehaviour(Behaviour * behaviour);
 	Behaviour * GetBehaviour() const;
+
+	void SetRotation(float rotation);
+	float GetRotation() const;
 
 private:
 	void CreatePlane();

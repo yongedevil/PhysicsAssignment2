@@ -7,6 +7,7 @@ void Entity::Shutdown()
 	{
 		(*it)->Shutdown();
 	}
+	m_Components.clear();
 }
 
 void Entity::AddComponent(Component* component)

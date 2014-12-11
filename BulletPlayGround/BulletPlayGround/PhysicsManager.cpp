@@ -69,7 +69,8 @@ void PhysicsManager::Shutdown()
 void PhysicsManager::Update(float deltaTime)
 {
 	m_dynamicsWorld->stepSimulation(deltaTime, 10);
-	m_dynamicsWorld->contactTest(m_dynamicsWorld->getCollisionObjectArray()[0],m_ContactCallback);
+	if (m_dynamicsWorld->getNumCollisionObjects() > 0)
+		m_dynamicsWorld->contactTest(m_dynamicsWorld->getCollisionObjectArray()[0],m_ContactCallback);
 }
 
 void PhysicsManager::AddPhysicsComponent(PhysicsComponent* physComp)

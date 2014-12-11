@@ -22,6 +22,12 @@ PhysicsManager* physicsManager = nullptr;
 
 SphereBehaviour * sphere;
 PlatformBehaviour * platform;
+enum gameStage
+{
+	LEVEL1,
+	LEVEL2,
+	GAME_OVER
+} curStage;
 
 // Screen size
 int screenWidth = 640;
@@ -34,6 +40,11 @@ void Update(float dt);
 void Render(SDL_Window* window);
 PlatformBehaviour * AddPlatform();
 SphereBehaviour * AddSphere();
+void CreateObstical(EVector3f pos, float rotation, Colour colour);
+void NextStage();
+void CreateStage1();
+void CreateStage2();
+void CreateStageEnd();
 
 float FRAMERATE = 1.0f/60.0f;
 
@@ -83,8 +94,8 @@ int main(int argc, char **argv)
 	physicsManager->Init();
 	//physicsManager->SetDebug(true);
 
-	platform = AddPlatform();
-	sphere = AddSphere();
+
+	CreateStage1();
 
 
 	
@@ -141,12 +152,12 @@ void HandleEvents(SDL_Event* curEvent)
 		{
 		case SDLK_a:
 		case SDLK_LEFT:
-			sphere->Move(EVector3f(-4.0f, 0.0f, 0.0f));
+			sphere->Move(EVector3f(-6.0f, 0.0f, 0.0f));
 			break;
 
 		case SDLK_d:
 		case SDLK_RIGHT:
-			sphere->Move(EVector3f(4.0f, 0.0f, 0.0f));
+			sphere->Move(EVector3f(6.0f, 0.0f, 0.0f));
 			break;
 
 		case SDLK_s:
@@ -156,6 +167,10 @@ void HandleEvents(SDL_Event* curEvent)
 
 		case SDLK_p:
 			sphere->Reset();
+			break;
+
+		case SDLK_BACKSPACE:
+			NextStage();
 			break;
 
 		case SDLK_SPACE:
@@ -241,7 +256,7 @@ PlatformBehaviour * AddPlatform()
 	//platform behaviour component
 	PlatformBehaviour * pbc = new PlatformBehaviour();
 	pbc->SetOwner(ent);
-	pbc->Init(gc, pc, 1.0f, -15.0f, 15.0f);
+	pbc->Init(gc, pc, 2.0f, -15.0f, 15.0f);
 	ent->AddComponent(pbc);
 
 
@@ -274,10 +289,82 @@ SphereBehaviour * AddSphere()
 	//sphere behaviour component
 	SphereBehaviour * sbc = new SphereBehaviour();
 	sbc->SetOwner(ent);
-	sbc->Init(gc, pc, Colour::BLUE);
+	sbc->Init(gc, pc, Colour::BLUE, NextStage);
 	ent->AddComponent(sbc);
 
 
 	entities.push_back(ent);
 	return sbc;
+}
+
+void CreateObstical(EVector3f pos, float rotation, Colour colour)
+{
+	Entity * ent = new Entity();
+	ent->SetPosition(pos);
+
+	//platform componet
+	PlatformComponent* pc = new PlatformComponent();
+	pc->SetOwner(ent);
+	pc->Init(PhysicsComponent::RBST_Plane);
+	pc->SetInverseMass(0);
+	pc->SetRotation(rotation);
+	ent->AddComponent(pc);
+
+	//graphics component
+	GraphicsComponent* gc = new GraphicsComponent();
+	gc->SetOwner(ent);
+	gc->Init(GraphicsComponent::GST_Plane);
+	gc->SetColour(Behaviour::ConvertColour(colour));
+	gc->SetRotation(rotation);
+	ent->AddComponent(gc);
+
+	entities.push_back(ent);
+}
+
+void NextStage()
+{
+	for (std::vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
+	{
+		(*it)->Shutdown();
+	}
+	entities.clear();
+
+	switch (curStage)
+	{
+	case gameStage::LEVEL1:
+		CreateStage2();
+		break;
+
+	case gameStage::LEVEL2:
+		CreateStageEnd();
+		break;
+
+	case gameStage::GAME_OVER:
+		CreateStage1();
+		break;
+	}
+}
+
+void CreateStage1()
+{
+	platform = AddPlatform();
+	sphere = AddSphere();
+	curStage = gameStage::LEVEL1;
+}
+
+void CreateStage2()
+{
+	platform = AddPlatform();
+	sphere = AddSphere();
+
+	CreateObstical(EVector3f(1, 5, 0), 45, Colour::GREEN);
+	CreateObstical(EVector3f(-4, 10, 0), 6, Colour::RED);
+	CreateObstical(EVector3f(10, 8, 0), 55, Colour::TEAL);
+
+	curStage = gameStage::LEVEL2;
+}
+
+void CreateStageEnd()
+{
+	curStage = gameStage::GAME_OVER;
 }

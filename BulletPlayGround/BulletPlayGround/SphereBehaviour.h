@@ -12,21 +12,18 @@ class SphereBehaviour : public Behaviour
 private:
 	bool m_preDrop;
 	EVector3f m_moveVec;
-	Colour m_colour;
-	EVector3f m_colourVector;
 	GraphicsComponent * m_graphicsComp;
 	PhysicsComponent * m_physicsComp;
+	void (*m_endFunc)(void);
 
 public:
-	SphereBehaviour() : m_graphicsComp(0), m_physicsComp(0), m_colour(Colour::RED), m_preDrop(true), m_moveVec(0, 0, 0) { }
+	SphereBehaviour() : m_graphicsComp(0), m_physicsComp(0), m_preDrop(true), m_moveVec(0, 0, 0), m_endFunc(0) {}
 	~SphereBehaviour() { }
 
-	void Init(GraphicsComponent * graphicsComponent, PhysicsComponent * physicComponent, Colour colour);
+	void Init(GraphicsComponent * graphicsComponent, PhysicsComponent * physicComponent, Colour colour, void (*endFunc)());
 	void Shutdown() { }
 
 	void Update(float dt);
-
-	Colour GetColour() const { return m_colour; }
 
 	void Drop();
 	void ApplyImpulse(EVector3f const& impulse);

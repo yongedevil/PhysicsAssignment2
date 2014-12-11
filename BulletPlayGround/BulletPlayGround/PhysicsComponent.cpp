@@ -191,6 +191,20 @@ EVector3f PhysicsComponent::GetPosition() const
 	btVector3 btPosition = m_rigidBody->getWorldTransform().getOrigin();
 	return EVector3f(btPosition.x(), btPosition.y(), btPosition.z());
 }
+void PhysicsComponent::SetInverseMass(float inverseMass)
+{
+	float mass;
+	if (0 != inverseMass)
+		mass = 1 / inverseMass;
+	else
+		mass = 0;
+	m_rigidBody->setMassProps(mass, btVector3(0, 0, 0));
+}
+
+float PhysicsComponent::GetInverseMass() const
+{
+	return m_rigidBody->getInvMass();
+}
 
 void PhysicsComponent::SetVelocity(EVector3f const& vel)
 {
@@ -225,4 +239,16 @@ void PhysicsComponent::SetBehaviour(Behaviour * behaviour)
 Behaviour * PhysicsComponent::GetBehaviour() const
 {
 	return m_behaviour;
+}
+void PhysicsComponent::SetRotation(float rotation)
+{
+	btTransform trans = m_rigidBody->getWorldTransform();
+	trans.setRotation(btQuaternion(btVector3(0, 0, 1), rotation * 3.14159265359 / 180.0));
+	m_rigidBody->setWorldTransform(trans);
+}
+
+float PhysicsComponent::GetRotation() const
+{
+	btQuaternion btRotation = m_rigidBody->getWorldTransform().getRotation();
+	return btRotation.getAngle() * 180.0 / 3.14159265359;
 }

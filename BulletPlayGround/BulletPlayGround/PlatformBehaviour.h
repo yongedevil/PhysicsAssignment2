@@ -15,7 +15,6 @@ private:
 
 	float m_changeInterval;
 	float m_lastChange;
-	Colour m_curColour;
 	float m_minX;
 	float m_maxX;
 	GraphicsComponent * m_graphicsComp;
@@ -23,15 +22,13 @@ private:
 
 
 public:
-	PlatformBehaviour() : m_graphicsComp(0), m_platformComp(0), m_changeInterval(1), m_lastChange(0), m_curColour(Colour::RED) { }
+	PlatformBehaviour() : m_graphicsComp(0), m_platformComp(0), m_changeInterval(1), m_lastChange(0) { }
 	~PlatformBehaviour() { }
 
 	void Init(GraphicsComponent * graphicsComponent, PlatformComponent * platformComponent, float changeInterval, float minX, float maxX);
 	void Shutdown() { }
 
 	void Update(float dt);
-
-	Colour GetColour() const { return m_curColour; }
 
 private:
 	void ChangeColour();

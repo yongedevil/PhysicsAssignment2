@@ -2,14 +2,15 @@
 //#include "../BulletCollision/CollisionDispatch/btCollisionWorld.h"
 //#include "btBulletDynamicsCommon.h"
 
-void SphereBehaviour::Init(GraphicsComponent * graphicsComponent, PhysicsComponent * physicComponent, Colour colour)
+void SphereBehaviour::Init(GraphicsComponent * graphicsComponent, PhysicsComponent * physicComponent, Colour colour, void (*endFunc)())
 {
-	m_colour = colour;
-	m_colourVector = Behaviour::ConvertColour(m_colour);
 	m_graphicsComp = graphicsComponent;
 	m_physicsComp = physicComponent;
+	m_endFunc = endFunc;
 
-	m_graphicsComp->SetColour(m_colourVector);
+	SetColour(colour);
+
+	m_graphicsComp->SetColour(Behaviour::ConvertColour(colour));
 	m_physicsComp->SetActivationState(0);
 	m_physicsComp->SetBehaviour(this);
 }
@@ -47,10 +48,12 @@ void SphereBehaviour::Move(EVector3f const& move)
 void SphereBehaviour::OnCollision(Behaviour * other)
 {
 	Colour otherColour = other->GetColour();
+	Colour thisColour = GetColour();
 
-	if(otherColour == m_colour)
+	if (otherColour == thisColour)
 	{
-
+		if (NULL != m_endFunc)
+			m_endFunc();
 	}
 	else
 	{
@@ -62,7 +65,7 @@ void SphereBehaviour::Reset()
 {
 	btRigidBody * rbody = m_physicsComp->GetRigidBody();
 	m_physicsComp->SetVelocity(EVector3f(0.0f, 0.0f, 0.0f));
-	m_physicsComp->SetPosition(EVector3f(0.0f, 5.0f, 0.0f));
+	m_physicsComp->SetPosition(EVector3f(0.0f, 15.0f, 0.0f));
 	m_physicsComp->SetActivationState(0);
 	m_preDrop = true;
 }
