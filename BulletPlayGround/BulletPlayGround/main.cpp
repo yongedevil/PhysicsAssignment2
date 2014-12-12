@@ -2,6 +2,7 @@
 #include <GL\include\glut.h>
 #include "../SDL2/include/SDL.h"
 #include "../SDL2/include/SDL_opengl.h"
+#include "../SDL2/include/SDL_ttf.h"
 #include "PhysicsManager.h"
 #include "Entity.h"
 #include "Component.h"
@@ -166,7 +167,10 @@ void HandleEvents(SDL_Event* curEvent)
 			break;
 
 		case SDLK_p:
-			sphere->Reset();
+			if(curStage == gameStage::GAME_OVER)
+				NextStage();
+			else
+				sphere->Reset();
 			break;
 
 		case SDLK_BACKSPACE:
@@ -174,7 +178,10 @@ void HandleEvents(SDL_Event* curEvent)
 			break;
 
 		case SDLK_SPACE:
-			sphere->Drop();
+			if(curStage == gameStage::GAME_OVER)
+				NextStage();
+			else
+				sphere->Drop();
 			break;
 
 		default:
@@ -367,4 +374,9 @@ void CreateStage2()
 void CreateStageEnd()
 {
 	curStage = gameStage::GAME_OVER;
+}
+
+
+void DrawText()
+{
 }
